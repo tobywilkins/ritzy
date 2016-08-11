@@ -1,3 +1,7 @@
-class ApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session
+class ApplicationController < ActionController::API
+
+  def allow_forgery_protection
+       false
+  end
+
 end
