@@ -2,8 +2,10 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionController::Serialization
   before_action :authenticate
+  # protect_from_forgery with: :null_session
 
-  def allow_forgery_protection
+
+  def protect_against_forgery
        false
   end
 
