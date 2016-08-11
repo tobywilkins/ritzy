@@ -1,19 +1,27 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionController::Serialization
-
-  before_filter :restrict_access
+  before_action :authenticate
 
   def allow_forgery_protection
        false
   end
 
-private
+protected
 
-  def restrict_access
+  def authenticate
+    authenticate_token || render_unauthorized
+  end
+
+  def authenticate_token
     authenticate_with_http_token do |token, options|
-      ApiKey.exists?(access_token: token)
+      @current_user = User.find_by(api_key: token)
     end
+  end
+
+  def render_unauthorized(realm = "Application")
+    self.headers["WWW-Authenticate"] = %(Token realm="#{realm.gsub(/"/, "")}")
+    render json: 'Bad credentials', status: :unauthorized
   end
 
 end
