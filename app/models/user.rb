@@ -5,6 +5,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :swipes_as_user, :class_name => "Swipe", :foreign_key => :user_id
+  has_many :swipes_as_swiped_user, :class_name => "Swipe", :foreign_key => :swiped_user_id
+
+
   has_attached_file :image, styles: { screen: "640x480>", thumb: "100x75>" }
   validates_attachment :image, presence: true
   do_not_validate_attachment_file_type :image
