@@ -10,7 +10,11 @@ def create
   swiped_user = User.find(params[:swiped_user_id])
   swipe = Swipe.new(user_id: @current_user.id,swiped_user: swiped_user,yes_swipe: params[:yes_swipe])
   if swipe.save
-    render json: swipe, status: 201
+    if Swipe.where(user_id: swiped_user.id).pluck(:yes_swipe)
+      render json: swipe, status: 201
+    else
+      head 200
+    end
   else
     render json: {errors: swipe.errors}, status: 422
   end
