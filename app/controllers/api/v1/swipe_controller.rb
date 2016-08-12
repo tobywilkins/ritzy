@@ -3,7 +3,7 @@ class Api::V1::SwipeController < ApplicationController
   respond_to :json
 
 def show
-top_match
+find_prospects
 end
 
 def create
@@ -20,9 +20,15 @@ end
 
 private
 
-def top_match
-  user = User.where(sex: @current_user.looking_for).first
-  render json: user, status: 201
+def find_prospects
+  # swiped_ids = Swipe.where(user_id: @current_user.id).pluck(:swiped_user_id)
+  users_not_swiped =  User.where.not(id: @current_user.swipes_as_user.select(:swiped_user_id)).ids
+  users_to_show = User.where(id: users_not_swiped,sex: @current_user.looking_for)
+  render json: users_to_show, status: 201
+end
+
+def previously_swiped
+  swiped_ids = Swipe.where(user_id: @current_user.id).swiped_user_id
 end
 
 def swipe_params
