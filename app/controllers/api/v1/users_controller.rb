@@ -9,6 +9,8 @@ class Api::V1::UsersController < ApplicationController
 
   def create
     user = User.new(user_params)
+    user.image = params[:image] if params[:image].present?
+
     if user.save
       render json: user, status: 201, location: [:api, user]
     else
@@ -35,6 +37,6 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:email,:password,:password_confirmation,:image)
+    params.permit(:email,:password,:password_confirmation,:image,:dob,:name)
   end
 end

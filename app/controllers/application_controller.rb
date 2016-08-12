@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionController::Serialization
-  before_action :authenticate
+  before_action :authenticate unless Rails.env.test?
   # protect_from_forgery with: :null_session
 
 

@@ -5,8 +5,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_attached_file :image, styles: { screen: "640x480>", thumb: "100x75>" }, default_url: "/images/:style/missing.png"
-  validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
+  has_attached_file :image, styles: { screen: "640x480>", thumb: "100x75>" }
+  validates_attachment :image, presence: true
+  do_not_validate_attachment_file_type :image
 
   before_create do |user|
     user.api_key = user.generate_api_key
