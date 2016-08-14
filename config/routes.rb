@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     scope module: :v1,
               constraints: ApiConstraints.new(version: 1, default: true) do
       resources :users, :only => [:show, :create, :update, :destroy]
-      get 'swipes', to: 'swipe#show'    end
+      get 'swipes', to: 'swipe#show'
+      post 'swipes', to: 'swipe#create'
+      get 'matches', to: 'match#show'
+    end
   end
 end

@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :swipes_as_user, :class_name => "Swipe", :foreign_key => :user_id
   has_many :swipes_as_swiped_user, :class_name => "Swipe", :foreign_key => :swiped_user_id
 
+  has_many :matches_as_user_one, :class_name => "Match", :foreign_key => :user_one_id
+  has_many :matches_as_user_two, :class_name => "Match", :foreign_key => :user_two_id
+
 
   has_attached_file :image, styles: { screen: "640x480>", thumb: "100x75>" }
   validates_attachment :image, presence: true
