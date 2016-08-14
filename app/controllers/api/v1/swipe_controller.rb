@@ -3,7 +3,7 @@ class Api::V1::SwipeController < ApplicationController
   respond_to :json
 
 def show
-find_prospects
+  find_prospects
 end
 
 def create
