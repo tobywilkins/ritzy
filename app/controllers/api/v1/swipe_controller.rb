@@ -7,21 +7,29 @@ find_prospects
 end
 
 def create
+  # retrieve the user who has been swiped
   swiped_user = User.find(params[:swiped_user_id])
+  #retrieve the swipe the other user made (if its been made)
   swiped_user_swipe = Swipe.where(user_id: swiped_user.id,swiped_user_id: @current_user.id).first
+  #create a new swipe record
   swipe = Swipe.new(user_id: @current_user.id,swiped_user: swiped_user,yes_swipe: params[:yes_swipe])
   if swipe.save
-    if !!swiped_user_swipe
-      if swiped_user_swipe.yes_swipe == true
-        #we need to create a match here
-        render json: swiped_user_swipe, status: 201
+    if !!swiped_user_swipe #if the person swiped has made a swipe
+      if swiped_user_swipe.yes_swipe == true #other person said yes
+        if swipe.yes_swipe == true #user said yes
+          #both people have said yes
+          match = Match.create_match(@current_user.id, swiped_user.id)
+          render json: match, status: 201
+        else
+          #person swiping has said no
+          head 200
+        end
       else
         #other person already said no
         render json: swiped_user_swipe, status: 200
       end
-        #other person not been shown yet
-      render json: swiped_user_swipe, status: 200
     else
+      #other person not been shown yet
       render json: swiped_user_swipe, status: 200
     end
   else

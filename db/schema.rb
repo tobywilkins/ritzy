@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160812132429) do
+ActiveRecord::Schema.define(version: 20160814135754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 20160812132429) do
     t.string   "access_token"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "matches", force: :cascade do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "user_one_id"
+    t.integer  "user_two_id"
+    t.index ["user_one_id"], name: "index_matches_on_user_one_id", using: :btree
+    t.index ["user_two_id"], name: "index_matches_on_user_two_id", using: :btree
   end
 
   create_table "swipes", force: :cascade do |t|
