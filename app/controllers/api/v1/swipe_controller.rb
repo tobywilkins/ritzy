@@ -1,6 +1,9 @@
 class Api::V1::SwipeController < ApplicationController
 
+  before_action :authenticate unless Rails.env.test?
+  
   respond_to :json
+
 
 def show
   find_prospects

@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionController::Serialization
-  before_action :authenticate unless Rails.env.test?
-  # protect_from_forgery with: :null_session
+
+  before_action :destroy_session
 
 
   def protect_against_forgery
@@ -10,6 +10,11 @@ class ApplicationController < ActionController::API
   end
 
 protected
+
+  def destroy_session
+    request.session_options[:skip] = true
+  end
+
 
   def authenticate
     authenticate_token || render_unauthorized

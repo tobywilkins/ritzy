@@ -2,6 +2,8 @@
 class Api::V1::UsersController < ApplicationController
 
   respond_to :json
+  before_action :authenticate, except: [:create] unless Rails.env.test?
+
 
   def show
     respond_with User.find(params[:id])
@@ -12,7 +14,7 @@ class Api::V1::UsersController < ApplicationController
     user.image = params[:image] if params[:image].present?
 
     if user.save
-      render json: user, status: 201, location: [:api, user]
+      render json: user, serializer: CreateUserSerializer, status: 201, location: [:api, user]
     else
       render json: {errors: user.errors}, status: 422
     end

@@ -1,5 +1,7 @@
 class Api::V1::MatchController < ApplicationController
 
+  before_action :authenticate unless Rails.env.test?
+  
   respond_to :json
 
   def show
