@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
 
   has_attached_file :image, styles: { screen: "640x480>", thumb: "100x75>" }
-  validates_attachment :image, presence: true
+  validates_attachment :image
   do_not_validate_attachment_file_type :image
 
   before_create do |user|
